@@ -1,0 +1,7 @@
+pandas==2.2.0
+python-dotenv==1.0.0
+azure-ai-inference==1.0.0
+azure-core==1.26.0
+pydantic==2.5.0
+tenacity==8.2.3
+pytest==7.4.0
