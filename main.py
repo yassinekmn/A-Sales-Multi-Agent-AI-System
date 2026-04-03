@@ -5,6 +5,8 @@ from data_analyst_agent import analyze_data
 from insight_generator_agent import generate_insights
 from report_writer_agent import generate_report
 from planner_agent import plan_tasks
+from export_agent import export_report
+from comparison_agent import compare_regions, compare_products, compare_head_to_head
 from utils.logger import get_logger
 from utils.errors import AgentExecutionError, DataValidationError
 
@@ -41,6 +43,7 @@ def main():
 
             analyst_output = None
             insights = None
+            report_output = None
 
             # Execute planned steps
             for step in steps:
@@ -67,9 +70,47 @@ def main():
                             continue
                         
                         print("\n📄 Report Writer is drafting...")
-                        report = generate_report(user_input, analyst_output, insights)
+                        report_output = generate_report(user_input, analyst_output, insights)
                         print("\n--- 📄 FINAL REPORT ---")
-                        print(report)
+                        print(report_output)
+
+                    elif step == "comparison":
+                        print("\n📊 Comparison Agent is analyzing...")
+                        # Determine comparison type from user input
+                        if "region" in user_input.lower():
+                            comparison = compare_regions()
+                        elif "product" in user_input.lower():
+                            comparison = compare_products()
+                        else:
+                            comparison = compare_regions()  # Default
+                        print("\n--- 📊 COMPARISON ANALYSIS ---")
+                        print(comparison)
+
+                    elif step == "export":
+                        if not report_output and not analyst_output:
+                            print("⚠️  Skipping export (no analysis available)")
+                            continue
+                        
+                        print("\n💾 Export Agent is preparing...")
+                        content = report_output or analyst_output
+                        
+                        # Detect export format from user input
+                        export_format = 'json'  # Default format
+                        user_lower = user_input.lower()
+                        if 'pdf' in user_lower:
+                            export_format = 'pdf'
+                        elif 'html' in user_lower:
+                            export_format = 'html'
+                        elif 'txt' in user_lower or 'text' in user_lower:
+                            export_format = 'txt'
+                        elif 'excel' in user_lower or 'xlsx' in user_lower:
+                            export_format = 'json'  # Keep as JSON for now (Excel would need tabular data)
+                        
+                        export_result = export_report(content, format=export_format)
+                        print("\n--- 💾 EXPORT RESULT ---")
+                        print(f"✓ Report exported to: {export_result['file_path']}")
+                        print(f"  Format: {export_result['format']}")
+                        print(f"  Size: {export_result['size_bytes']} bytes")
 
                 except DataValidationError as e:
                     logger.error(f"Data validation error in {step}: {e}")

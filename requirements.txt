@@ -5,3 +5,5 @@ azure-core==1.26.0
 pydantic==2.5.0
 tenacity==8.2.3
 pytest==7.4.0
+reportlab==4.0.7
+openpyxl==3.1.0

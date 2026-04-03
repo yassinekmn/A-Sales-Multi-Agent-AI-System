@@ -54,6 +54,8 @@ Available agents:
 - analyst → analyzes data and answers questions
 - insight → generates insights from analysis
 - report → writes business reports
+- comparison → compares sales across regions/products
+- export → exports reports in PDF, Excel, JSON, HTML formats
 
 Return ONLY a valid JSON array of agent names.
 
@@ -61,6 +63,8 @@ Examples:
 - "Which region sold most?" → ["analyst"]
 - "Give me insights" → ["analyst", "insight"]
 - "Create a report" → ["analyst", "insight", "report"]
+- "Compare north and south regions" → ["comparison"]
+- "Export the analysis as PDF" → ["analyst", "export"]
 
 User: {user_input}
 

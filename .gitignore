@@ -55,6 +55,11 @@ htmlcov/
 *.log
 logs/
 
+# Generated reports and exports
+exports/
+*.pdf
+*.html
+
 # Database
 *.db
 *.sqlite

@@ -12,6 +12,8 @@ class AgentType(Enum):
     ANALYST = "analyst"
     INSIGHT = "insight"
     REPORT = "report"
+    EXPORT = "export"
+    COMPARISON = "comparison"
 
 
 @dataclass
@@ -76,6 +78,20 @@ class SystemConfig:
             token_env_var="REPORT_GITHUB_TOKEN",
             model_env_var="REPORT_GITHUB_MODEL",
             system_prompt="You write professional business reports."
+        ),
+        AgentType.EXPORT: AgentConfig(
+            name="Export Agent",
+            agent_type=AgentType.EXPORT,
+            token_env_var="ANALYST_GITHUB_TOKEN",
+            model_env_var="ANALYST_GITHUB_MODEL",
+            system_prompt="You export reports in different formats."
+        ),
+        AgentType.COMPARISON: AgentConfig(
+            name="Comparison Agent",
+            agent_type=AgentType.COMPARISON,
+            token_env_var="ANALYST_GITHUB_TOKEN",
+            model_env_var="ANALYST_GITHUB_MODEL",
+            system_prompt="You perform comparative analysis on sales data."
         ),
     }
 
