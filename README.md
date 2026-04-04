@@ -10,8 +10,8 @@ User Query
 Planner Agent (decides workflow)
     ↓
 ┌─────────────────────────────────────────┐
-│  Data Analyst  │  Comparison  │ Export │
-│     Agent      │    Agent     │ Agent  │
+│  Data Analyst  │  Comparison  │ Export  │
+│     Agent      │    Agent     │ Agent   │
 └─────────────────────────────────────────┘
     ↓
  Insight Generator → Report Writer
@@ -30,6 +30,7 @@ Output to User
 
 ## Features
 
+✅ **Web Dashboard** - Interactive Streamlit interface for non-technical users  
 ✅ **Multi-Agent Orchestration** - Intelligent workflow planning with 6 specialized agents  
 ✅ **Comparative Analysis** - Compare regions, products, and performance metrics  
 ✅ **Multi-Format Export** - JSON, TXT, HTML, PDF report generation  
@@ -49,38 +50,96 @@ Output to User
 pip install -r requirements.txt
 ```
 
-### 2. **Configure Environment**
+### 2. **Configure Environment (Optional)**
 
-Create a `.env` file with your GitHub Marketplace API tokens:
+**For Portfolio Reviewers:** The dashboard includes a **Demo Mode** that works without any configuration! Simply run the dashboard and it will automatically detect demo mode, showing pre-computed sample analyses and fully functional export buttons.
 
-```env
-# Planner Agent
-PLANNER_GITHUB_TOKEN=ghp_your_token_here
-PLANNER_GITHUB_MODEL=openai/gpt-4.1
+**For Live AI Analysis:** To enable custom questions and real-time AI analysis, add your GitHub Marketplace API tokens.
 
-# Data Analyst Agent
-ANALYST_GITHUB_TOKEN=ghp_your_token_here
-ANALYST_GITHUB_MODEL=openai/gpt-4.1
-
-# Insight Generator
-INSIGHT_GITHUB_TOKEN=ghp_your_token_here
-INSIGHT_GITHUB_MODEL=openai/gpt-4.1
-
-# Report Writer
-REPORT_GITHUB_TOKEN=ghp_your_token_here
-REPORT_GITHUB_MODEL=openai/gpt-4.1
-
-# System Settings
-GITHUB_ENDPOINT=https://models.github.ai/inference
-DATA_FILE=sales.csv
-LOG_LEVEL=INFO
+#### Option A: Quick Start with Demo Mode (No Setup Required) 🎬
+```bash
+# Just run the dashboard - Demo Mode activates automatically
+python start_dashboard.py
 ```
+The dashboard detects missing tokens and enters Demo Mode, which includes:
+- ✅ Dashboard with sample data and charts
+- ✅ Pre-loaded sample questions with analysis results
+- ✅ Full export functionality (PDF, JSON, HTML, TXT)
+- ✅ Comparison reports with sample data
+- ✅ All UI/UX features working
+
+Perfect for: **Portfolio reviews, demonstrations, testing the UI**
+
+#### Option B: Live AI Analysis with Your Tokens
+
+1. **Start with the template:**
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Add your GitHub Marketplace API tokens to `.env`:**
+   - Get free tokens from: https://github.com/settings/tokens
+   - Edit `.env` and replace `ghp_your_token_here` with your actual tokens
+
+   ```env
+   PLANNER_GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxx
+   ANALYST_GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxx
+   INSIGHT_GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxx
+   REPORT_GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxx
+   ```
+
+3. **Start the dashboard:**
+   ```bash
+   python start_dashboard.py
+   ```
+   
+   When tokens are configured, the dashboard will show ✅ **Live mode** and allow custom AI queries.
+
+Perfect for: **Production use, custom analysis, full system capability**
+
+**⚠️ Security Note:** The `.env` file is git-ignored and never committed. Your tokens remain completely private.
 
 ### 3. **Run the System**
+
+#### Option A: Web Dashboard (Recommended for Non-Technical Users) 🌐
+
+```bash
+# Windows
+run_dashboard.bat
+
+# Mac/Linux
+python start_dashboard.py
+```
+
+Then open your browser to **http://localhost:8501**
+
+The web dashboard provides:
+- 📊 **Dashboard** - View sales metrics and data overview
+- 🔍 **Ask AI** - Chat-like interface to ask questions about your data (works in both demo and live modes!)
+- 📈 **Comparisons** - Compare regions and products side-by-side
+- 📄 **Reports** - View and download previously generated reports
+
+**Works in Two Modes:**
+- 🎬 **Demo Mode** (No tokens needed) - Shows sample analyses and fully functional UI
+- ✅ **Live Mode** (With tokens) - Custom AI-powered analysis of your questions
+
+**Perfect for**: Non-technical users, stakeholders, executives, portfolio demonstrations
+
+#### Option B: Command-Line Interface
 
 ```bash
 python main.py
 ```
+
+Interactive CLI where you can ask questions and get instant analysis. (Requires `.env` configuration)
+
+#### Option C: Run Tests
+
+```bash
+pytest tests/ -v
+```
+
+Run the comprehensive test suite (27 tests)
 
 ## Usage Examples
 
@@ -128,11 +187,63 @@ python main.py
 ✓ Report exported to: exports/report_20260403_014207.pdf
 ```
 
+## 🎬 Demo Mode
+
+The dashboard includes a **Demo Mode** that works immediately without any configuration. This is perfect for portfolio reviews, demos, and testing the UI.
+
+### What's Included in Demo Mode?
+
+| Feature | Demo Mode | Live Mode |
+|---------|-----------|-----------|
+| Dashboard with charts | ✅ | ✅ |
+| Ask AI with sample questions | ✅ (Pre-loaded) | ✅ (Custom) |
+| Export to PDF/JSON/HTML | ✅ | ✅ |
+| Regional comparisons | ✅ (Sample) | ✅ (Real data) |
+| Product comparisons | ✅ (Sample) | ✅ (Real data) |
+| Custom AI questions | ❌ | ✅ |
+| Requires API tokens | ❌ | ✅ |
+
+### How It Works
+
+1. **Run the dashboard** (no `.env` needed)
+   ```bash
+   python start_dashboard.py
+   ```
+
+2. **Dashboard automatically detects demo mode** and shows:
+   - Sidebar warning: "🎬 DEMO MODE ACTIVE"
+   - Banner at top: "Using sample data and pre-computed results"
+   - All UI functional with pre-computed sample analyses
+
+3. **Portfolio reviewers can:**
+   - Browse the Dashboard tab with real sales metrics
+   - Select from sample questions in Ask AI mode
+   - View analysis results instantly
+   - Export results as PDF with custom filename
+   - Test comparisons with sample regional/product data
+   - Download reports
+
+4. **No token errors, no API delays** - everything works smoothly
+
+### Upgrading from Demo to Live Mode
+
+When you want to enable live AI analysis:
+```bash
+cp .env.example .env
+# Edit .env and add your GitHub Marketplace tokens
+python start_dashboard.py
+```
+
+The dashboard automatically switches to Live Mode when valid tokens are found.
+
 ## Project Structure
 
 ```
 ai-agents-journey-new/
-├── main.py                          # Entry point & orchestration loop
+├── main.py                          # Entry point & orchestration loop (CLI)
+├── streamlit_app.py                 # Web dashboard (Streamlit)
+├── start_dashboard.py               # Cross-platform dashboard launcher
+├── run_dashboard.bat                # Windows dashboard launcher
 ├── config.py                        # Configuration management
 ├── data_analyst_agent.py            # Data analysis agent
 ├── planner_agent.py                 # Workflow planning agent
@@ -143,6 +254,7 @@ ai-agents-journey-new/
 ├── generate_data.py                 # Generates sample data
 ├── sales.csv                        # Sample dataset
 ├── requirements.txt                 # Python dependencies
+├── .env.example                     # Environment template (copy to .env to configure)
 ├── .env                             # Environment variables (git-ignored)
 ├── .gitignore                       # Git exclusions (exports/)
 ├── utils/
